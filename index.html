@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第一章：日本旅遊與我</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;700&family=Noto+Sans+JP:wght@400;500;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* 1. 全局設定 & 變數 */
+        :root {
+            --primary: #c0392b;   /* 日本紅 */
+            --secondary: #2c3e50; /* 深藍 (午夜藍) */
+            --accent: #d35400;    /* 鳥居橘 */
+            --highlight: #f1c40f; /* 金色 */
+            --bg-paper: #f9f7f2;  /* 和紙白 */
+            --text-main: #2d3436;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            background-color: #dfe6e9;
+            /* 背景 Emoji 裝飾 */
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Ctext x='10' y='30' font-size='24' fill-opacity='0.1'%3E🗻%3C/text%3E%3Ctext x='50' y='70' font-size='24' fill-opacity='0.1'%3E🌸%3C/text%3E%3Ctext x='10' y='70' font-size='24' fill-opacity='0.1'%3E⛩️%3C/text%3E%3Ctext x='50' y='30' font-size='24' fill-opacity='0.1'%3E🍣%3C/text%3E%3C/svg%3E");
+            font-family: 'Noto Sans JP', 'Noto Sans TC', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px;
+            gap: 30px;
+            min-height: 100vh;
+            padding-bottom: 100px; /* 為工具列留空間 */
+        }
+
+        /* 2. 投影片容器 (和風簡約) */
+        .slide {
+            width: 1000px;
+            height: 700px;
+            background-color: var(--bg-paper);
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            display: none;
+            flex-direction: column;
+            page-break-after: always;
+            transition: transform 0.2s;
+        }
+
+        /* 和風邊框裝飾 */
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: 20px; left: 20px; right: 20px; bottom: 20px;
+            border: 2px solid rgba(192, 57, 43, 0.2);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .slide.active { display: flex; }
+
+        /* 內容區域 */
+        .content {
+            padding: 40px 60px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            z-index: 1;
+            overflow-y: auto;
+        }
+
+        /* 3. 排版與標題 */
+        h1 {
+            font-family: 'Shippori Mincho', serif;
+            color: var(--primary);
+            font-size: 64px;
+            text-align: center;
+            margin: auto;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            background: var(--primary);
+            color: white;
+            font-family: 'Shippori Mincho', serif;
+            padding: 12px 40px;
+            font-size: 32px;
+            margin: 0;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            background-image: linear-gradient(45deg, var(--primary) 25%, #e74c3c 25%, #e74c3c 50%, var(--primary) 50%, var(--primary) 75%, #e74c3c 75%, #e74c3c 100%);
+            background-size: 20px 20px;
+        }
+
+        h2 rt { color: white !important; opacity: 1; }
+
+        p, li {
+            font-size: 24px;
+            color: var(--text-main);
+            line-height: 1.8;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        ruby { font-family: 'Noto Sans JP', sans-serif; }
+        rt {
+            font-size: 0.6em;
+            color: var(--primary);
+            font-weight: bold;
+            transform: translateY(-3px); 
+        }
+
+        .cn {
+            display: block;
+            color: #7f8c8d;
+            font-size: 0.9em;
+            font-weight: normal;
+            background: rgba(255,255,255,0.6);
+            padding: 2px 8px;
+            border-radius: 4px;
+            width: fit-content;
+            margin-top: 2px;
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+
+        /* 4. 故事框 (和紙風格) */
+        .story-box {
+            background: white;
+            padding: 25px;
+            border: 2px solid var(--secondary);
+            border-radius: 4px;
+            box-shadow: 4px 4px 0px rgba(44, 62, 80, 0.1);
+            position: relative;
+            margin-bottom: 20px;
+        }
+        
+        /* 櫻花裝飾 */
+        .story-box::after {
+            content: '🌸';
+            position: absolute;
+            top: -10px; right: -10px;
+            font-size: 24px;
+            background: white;
+            border-radius: 50%;
+            padding: 5px;
+            border: 1px solid #eee;
+        }
+
+        /* 5. 對話框 */
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .message {
+            max-width: 85%;
+            padding: 15px 25px;
+            border-radius: 15px;
+            position: relative;
+            font-size: 22px;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+        }
+        .msg-left {
+            align-self: flex-start;
+            background: white;
+            border: 1px solid #ddd;
+            border-bottom-left-radius: 2px;
+        }
+        .msg-right {
+            align-self: flex-end;
+            background: #dff9fb; /* 淺藍 */
+            color: var(--text-main);
+            border-bottom-right-radius: 2px;
+            border: 1px solid #b2bec3;
+        }
+        .msg-right .cn { color: #555; }
+        .msg-right rt { color: var(--primary); }
+
+        /* 6. 單字卡 (御守風格) */
+        .vocab-grid, .vocab-grid-7 {
+            display: grid;
+            gap: 15px;
+            width: 100%;
+        }
+        .vocab-grid { grid-template-columns: repeat(5, 1fr); grid-template-rows: repeat(2, 1fr); }
+        
+        .vocab-card {
+            background: white;
+            border: 1px solid #ccc;
+            border-top: 4px solid var(--primary); /* 紅頂 */
+            border-radius: 5px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
+            position: relative;
+        }
+        
+        .vocab-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 5px 10px rgba(192, 57, 43, 0.2);
+        }
+
+        .vocab-word {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--text-main);
+            margin-bottom: 5px;
+            font-family: 'Shippori Mincho', serif;
+        }
+
+        .vocab-pos {
+            background: var(--secondary);
+            color: white;
+            font-size: 11px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-bottom: 5px;
+        }
+        .vocab-cn {
+            color: var(--primary);
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        /* 8. 角色介紹卡 */
+        .game-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+        .game-card {
+            background: white;
+            border: 2px solid var(--secondary);
+            border-radius: 8px;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            box-shadow: 5px 5px 0 rgba(0,0,0,0.05);
+        }
+
+        /* 9. 工具列 & 其他 */
+        .blank {
+            display: inline-block;
+            width: 120px;
+            border-bottom: 2px solid var(--text-main);
+            text-align: center;
+            background: #eee;
+            margin: 0 5px;
+        }
+        
+        .role-icon { font-size: 40px; margin-right: 15px; }
+        
+        .page-number {
+            position: absolute;
+            bottom: 15px; right: 20px;
+            font-size: 16px;
+            color: #999;
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+
+        /* 可收合工具列 */
+        #toolbar {
+            position: fixed;
+            bottom: 20px; left: 50%; transform: translateX(-50%);
+            background: var(--secondary);
+            color: white;
+            padding: 10px 25px;
+            border-radius: 50px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            display: flex; gap: 15px;
+            z-index: 9999;
+            align-items: center;
+            border: 2px solid white;
+            transition: all 0.3s ease;
+        }
+
+        #toolbar.minimized {
+            width: 60px;
+            padding: 10px;
+            justify-content: center;
+            overflow: hidden;
+            border-radius: 50%;
+        }
+
+        #toolbar.minimized > *:not(#toggle-btn) { display: none; }
+        
+        #toolbar button {
+            background: #576574;
+            border: none;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: 0.2s;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+        #toolbar button:hover { background: var(--primary); transform: translateY(-2px); }
+        #toolbar button.active { background: var(--accent); }
+
+        #toggle-btn {
+            background: var(--primary) !important;
+            min-width: 40px;
+        }
+
+        #toolbar .separator {
+            width: 1px; height: 20px; background: #999; margin: 0 5px;
+        }
+
+        /* 編輯模式 */
+        .slide[contenteditable="true"] { outline: 3px dashed var(--primary); cursor: text; }
+        .move-mode .draggable { cursor: grab; border: 2px dashed var(--primary); background: rgba(255,255,255,0.8); }
+        .slide img.draggable { position: absolute; border: 2px solid white; box-shadow: 2px 2px 5px rgba(0,0,0,0.2); }
+
+        @media print {
+            body { background: white; padding: 0; display: block; }
+            .slide { display: flex !important; margin: 0; page-break-after: always; width: 100%; height: 100%; border: none; outline: none !important; box-shadow: none; }
+            #toolbar { display: none; }
+            .content { background: white; }
+        }
+    </style>
+</head>
+<body class="theme-japan">
+
+    <input type="file" id="img-upload" hidden accept="image/*" onchange="handleImageUpload(this)">
+
+    <div id="toolbar">
+        <button id="toggle-btn" onclick="toggleToolbar()">▼</button>
+        <span style="font-weight:bold; color:#f1c40f;">🛠️ 教室：</span>
+        <button onclick="changeSlide(-1)">◀ 前</button>
+        <span id="page-indicator" style="font-size:14px; margin:0 5px;">1 / 30</span>
+        <button onclick="changeSlide(1)">次 ▶</button>
+        <div class="separator"></div>
+        <button id="btn-edit" onclick="toggleEdit()">✏️ 寫字</button>
+        <button id="btn-move" onclick="toggleMove()">✋ 移動</button>
+        <div class="separator"></div>
+        <button onclick="triggerImageUpload()">📷 貼圖</button>
+        <button onclick="adjustSize(2)">A+</button>
+        <button onclick="adjustSize(-2)">A-</button>
+        <button onclick="window.print()" style="background:#0984e3;">🖨️ PDF</button>
+    </div>
+
+    <!-- Slide 1: Cover -->
+    <div class="slide active">
+        <div style="flex:1; display:flex; flex-direction:column; justify-content:center; align-items:center;">
+            <div style="background:white; padding:50px; border-radius:50%; border:8px solid var(--primary); width:300px; height:300px; display:flex; align-items:center; justify-content:center; margin-bottom:30px;">
+                <i class="fa-solid fa-torii-gate" style="font-size: 120px; color: var(--primary);"></i>
+            </div>
+            <h1><ruby>第一章<rt>だいいっしょう</rt></ruby><br><ruby>日本<rt>にほん</rt></ruby><ruby>旅行<rt>りょこう</rt></ruby>と<ruby>私<rt>わたし</rt></ruby></h1>
+            <p style="font-size: 28px; margin-top: 20px; color:#555;">第一章：日本旅遊與我</p>
+            <p style="margin-top: 30px; background: var(--secondary); color: white; padding: 8px 20px; border-radius: 4px;">N5 初級日語課程</p>
+        </div>
+        <div class="page-number">1 / 30</div>
+    </div>
+
+    <!-- Slide 2: Introduction to Characters -->
+    <div class="slide">
+        <h2><ruby>登場<rt>とうじょう</rt></ruby><ruby>人物<rt>じんぶつ</rt></ruby> (登場人物)</h2>
+        <div class="content game-grid">
+            <div class="game-card">
+                <i class="fa-solid fa-user" style="font-size: 60px; color: var(--primary); margin-bottom: 10px;"></i>
+                <h3 style="margin: 0 0 10px 0; font-size: 28px; font-family:'Shippori Mincho';"><ruby>翔太<rt>しょうた</rt></ruby></h3>
+                <div style="text-align: left; width: 85%;">
+                    <p style="margin: 5px 0;">● <ruby>好<rt>す</rt></ruby>き：<ruby>旅行<rt>りょこう</rt></ruby>、ラーメン <span class="cn">喜歡：旅遊、拉麵</span></p>
+                    <p style="margin: 5px 0;">● <ruby>苦<rt>にが</rt></ruby><ruby>手<rt>て</rt></ruby>：<ruby>納豆<rt>なっとう</rt></ruby> <span class="cn">不喜歡：納豆</span></p>
+                    <p style="margin: 5px 0;">● <ruby>目標<rt>もくひょう</rt></ruby>：<ruby>日本<rt>にほん</rt></ruby><ruby>一周<rt>いっしゅう</rt></ruby> <span class="cn">目標：環遊日本</span></p>
+                </div>
+            </div>
+            <div class="game-card">
+                <i class="fa-solid fa-user" style="font-size: 60px; color: var(--accent); margin-bottom: 10px;"></i>
+                <h3 style="margin: 0 0 10px 0; font-size: 28px; font-family:'Shippori Mincho';">あき</h3>
+                <div style="text-align: left; width: 85%;">
+                    <p style="margin: 5px 0;">● <ruby>好<rt>す</rt></ruby>き：<ruby>神社<rt>じんじゃ</rt></ruby>、<ruby>抹茶<rt>まっちゃ</rt></ruby> <span class="cn">喜歡：神社、抹茶</span></p>
+                    <p style="margin: 5px 0;">● <ruby>苦<rt>にが</rt></ruby><ruby>手<rt>て</rt></ruby>：<ruby>人混<rt>ひとご</rt></ruby>み <span class="cn">不喜歡：人擠人</span></p>
+                    <p style="margin: 5px 0;">● <ruby>目標<rt>もくひょう</rt></ruby>：<ruby>着物<rt>きもの</rt></ruby>を<ruby>着<rt>き</rt></ruby>る <span class="cn">目標：穿和服</span></p>
+                </div>
+            </div>
+        </div>
+        <div class="page-number">2 / 30</div>
+    </div>
+
+    <!-- Slide 3: Story Part 1 -->
+    <div class="slide">
+        <h2>ストーリー 1：<ruby>自己紹介<rt>じこしょうかい</rt></ruby> (自我介紹)</h2>
+        <div class="content">
+            <div class="story-box">
+                <p>
+                    <span class="role-icon">👦🏻</span>はじめまして。<ruby>私<rt>わたし</rt></ruby>は<ruby>翔太<rt>しょうた</rt></ruby>です。
+                    <span class="cn">初次見面。我是翔太。</span>
+                </p>
+                <p>
+                    <ruby>会社員<rt>かいしゃいん</rt></ruby>です。<ruby>台湾人<rt>たいわんじん</rt></ruby>です。
+                    <span class="cn">我是上班族。我是台灣人。</span>
+                </p>
+                <p>
+                    <ruby>趣味<rt>しゅみ</rt></ruby>は <ruby>旅行<rt>りょこう</rt></ruby>と <ruby>写真<rt>しゃしん</rt></ruby>です。
+                    <span class="cn">我的興趣是旅遊和攝影。</span>
+                </p>
+                <p>
+                    <ruby>毎年<rt>まいねん</rt></ruby>、<ruby>日本<rt>にほん</rt></ruby>へ <ruby>行<rt>い</rt></ruby>きます。
+                    <span class="cn">我每年都去日本。</span>
+                </p>
+            </div>
+        </div>
+        <div class="page-number">3 / 30</div>
+    </div>
+
+    <!-- Slide 4: Story Part 1 Continued -->
+    <div class="slide">
+        <h2>ストーリー 1：<ruby>続<rt>つづ</rt></ruby>き (故事：續)</h2>
+        <div class="content">
+            <div class="story-box">
+                <p>
+                    <ruby>私<rt>わたし</rt></ruby>は <ruby>京都<rt>きょうと</rt></ruby>が <ruby>一番<rt>いちばん</rt></ruby> <ruby>好<rt>す</rt></ruby>きです。
+                    <span class="cn">我最喜歡京都。</span>
+                </p>
+                <p>
+                    <ruby>お寺<rt>てら</rt></ruby>は とても <ruby>綺麗<rt>きれい</rt></ruby>です。
+                    <span class="cn">寺廟非常漂亮。</span>
+                </p>
+                <p>
+                    <ruby>来週<rt>らいしゅう</rt></ruby>、<ruby>家族<rt>かぞく</rt></ruby>と <ruby>東京<rt>とうきょう</rt></ruby>へ <ruby>行<rt>い</rt></ruby>きます。
+                    <span class="cn">下週我要和家人去東京。</span>
+                </p>
+            </div>
+        </div>
+        <div class="page-number">4 / 30</div>
+    </div>
+
+    <!-- Slide 5: Vocabulary List 1 -->
+    <div class="slide">
+        <h2><ruby>単語<rt>たんご</rt></ruby>リスト (旅遊單字)</h2>
+        <div class="content">
+            <div class="vocab-grid">
+                <!-- Row 1 -->
+                <div class="vocab-card">
+                    <div class="vocab-pos">名詞</div>
+                    <div class="vocab-word"><ruby>旅行<rt>りょこう</rt></ruby></div>
+                    <div class="vocab-cn">旅遊</div>
+                </div>
+                <div class="vocab-card">
+                    <div class="vocab-pos">名詞</div>
+                    <div class="vocab-word"><ruby>飛行機<rt>ひこうき</rt></ruby></div>
+                    <div class="vocab-cn">飛機</div>
+                </div>
+                <div class="vocab-card">
+                    <div class="vocab-pos">名詞</div>
+                    <div class="vocab-word">ホテル</div>
+                    <div class="vocab-cn">飯店</div>
+                </div>
+                <div class="vocab-card">
+                    <div class="vocab-pos">名詞</div>
+                    <div class="vocab-word"><ruby>切符<rt>きっぷ</rt></ruby></div>
+                    <div class="vocab-cn">車票</div>
+                </div>
+                <div class="vocab-card">
+                    <div class="vocab-pos">名詞</div>
+                    <div class="vocab-word">パスポート</div>
+                    <div class="vocab-cn">護照</div>
+                </div>
+                <!-- Row 2 -->
+                <div class="vocab-card">
+                    <div class="vocab-pos">名詞</div>
+                    <div class="vocab-word"><ruby>地図<rt>ちず</rt></ruby></div>
+                    <div class="vocab-cn">地圖</div>
+                </div>
+                <div class="vocab-card">
+                    <div class="vocab-pos">名詞</div>
+                    <div class="vocab-word"><ruby>荷物<rt>にもつ</rt></ruby></div>
+                    <div class="vocab-cn">行李</div>
+                </div>
+                <div class="vocab-card">
+                    <div class="vocab-pos">名詞</div>
+                    <div class="vocab-word">お<ruby>土産<rt>みやげ</rt></ruby></div>
+                    <div class="vocab-cn">伴手禮</div>
+                </div>
+                <div class="vocab-card">
+                    <div class="vocab-pos">名詞</div>
+                    <div class="vocab-word">カメラ</div>
+                    <div class="vocab-cn">相機</div>
+                </div>
+                <div class="vocab-card">
+                    <div class="vocab-pos">名詞</div>
+                    <div class="vocab-word"><ruby>写真<rt>しゃしん</rt></ruby></div>
+                    <div class="vocab-cn">照片</div>
+                </div>
+            </div>
+        </div>
+        <div class="page-number">5 / 30</div>
+    </div>
+
+    <!-- Slide 6: Vocabulary Practice (Matching Game) -->
+    <div class="slide">
+        <h2><ruby>単語<rt>たんご</rt></ruby>ゲーム (連連看)</h2>
+        <div class="content">
+            <p style="text-align: center;">請將左邊的日文與右邊的中文連線：</p>
+            <div style="display: flex; justify-content: space-around; margin-top: 50px;">
+                <div style="display: flex; flex-direction: column; gap: 30px;">
+                    <div class="game-card">ア. <ruby>飛行機<rt>ひこうき</rt></ruby></div>
+                    <div class="game-card">イ. お<ruby>土産<rt>みやげ</rt></ruby></div>
+                    <div class="game-card">ウ. <ruby>地図<rt>ちず</rt></ruby></div>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 30px;">
+                    <div class="game-card">① 地圖</div>
+                    <div class="game-card">② 飛機</div>
+                    <div class="game-card">③ 伴手禮</div>
+                </div>
+            </div>
+        </div>
+        <div class="page-number">6 / 30</div>
+    </div>
+
+    <!-- Slide 7: Grammar Point 1 -->
+    <div class="slide">
+        <h2><ruby>文法<rt>ぶんぽう</rt></ruby> 1：<ruby>好<rt>す</rt></ruby>きです (表達喜歡)</h2>
+        <div class="content">
+            <div style="background: white; padding: 20px; border-radius: 8px; border-left: 8px solid var(--accent); box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                <p style="font-size: 32px; font-weight: bold;">
+                    <ruby>名詞<rt>めいし</rt></ruby> <span style="color: var(--primary);">が</span> <ruby>好<rt>す</rt></ruby>きです。
+                </p>
+                <p class="cn">我喜歡 [名詞]。</p>
+            </div>
+            <br>
+            <p><i class="fa-solid fa-star" style="color:var(--highlight)"></i> <ruby>私<rt>わたし</rt></ruby>は <strong><ruby>温泉<rt>おんせん</rt></ruby></strong> <span style="color:var(--primary);">が</span> <ruby>好<rt>す</rt></ruby>きです。</p>
+            <p class="cn">我喜歡溫泉。</p>
+            <br>
+            <p><i class="fa-solid fa-star" style="color:var(--highlight)"></i> <ruby>私<rt>わたし</rt></ruby>は <strong>お<ruby>寿司<rt>すし</rt></ruby></strong> <span style="color:var(--primary);">が</span> <ruby>好<rt>す</rt></ruby>きです。</p>
+            <p class="cn">我喜歡壽司。</p>
+        </div>
+        <div class="page-number">7 / 30</div>
+    </div>
+
+    <!-- Slide 8: Grammar Practice (Make Sentences) -->
+    <div class="slide">
+        <h2><ruby>練習<rt>れんしゅう</rt></ruby> (造句練習)</h2>
+        <div class="content">
+            <p>請用「～が 好きです」練習造句：</p>
+            <br>
+            <ol style="margin-left: 40px;">
+                <li>
+                    <ruby>日本<rt>にほん</rt></ruby> (日本) <i class="fa-solid fa-arrow-right"></i> _______________
+                    <p class="cn">範例：日本が好きです。</p>
+                </li>
+                <br>
+                <li>
+                    <ruby>新幹線<rt>しんかんせん</rt></ruby> (新幹線) <i class="fa-solid fa-arrow-right"></i> _______________
+                </li>
+                <br>
+                <li>
+                    <ruby>桜<rt>さくら</rt></ruby> (櫻花) <i class="fa-solid fa-arrow-right"></i> _______________
+                </li>
+            </ol>
+        </div>
+        <div class="page-number">8 / 30</div>
+    </div>
+
+    <!-- Slide 9: Class Activity (Survey) -->
+    <div class="slide">
+        <h2>クラス<ruby>活動<rt>かつどう</rt></ruby> (團體活動)</h2>
+        <div class="content">
+            <h3 style="text-align: center;">インタビュー (採訪遊戲)</h3>
+            <p>去問3個同學他們喜歡什麼地方！</p>
+            <br>
+            <div class="story-box">
+                <p><strong><ruby>問<rt>とい</rt></ruby>: </strong>どこが <ruby>好<rt>す</rt></ruby>きですか。</p>
+                <p class="cn">你喜歡哪裡？</p>
+                <p><strong><ruby>答<rt>こたえ</rt></ruby>: </strong>______ が <ruby>好<rt>す</rt></ruby>きです。</p>
+                <p class="cn">我喜歡 ______。</p>
+            </div>
+            <br>
+            <p>① (<ruby>名前<rt>なまえ</rt></ruby>: ______) <i class="fa-solid fa-heart" style="color:var(--primary)"></i> ________</p>
+            <p>② (<ruby>名前<rt>なまえ</rt></ruby>: ______) <i class="fa-solid fa-heart" style="color:var(--primary)"></i> ________</p>
+        </div>
+        <div class="page-number">9 / 30</div>
+    </div>
+
+    <!-- Slide 10: Story Part 2 -->
+    <div class="slide">
+        <h2>ストーリー 2：お店で (在店裡)</h2>
+        <div class="content">
+            <div class="story-box">
+                <p>
+                    <span class="role-icon">👦🏻</span>ここは お<ruby>土産<rt>みやげ</rt></ruby><ruby>屋<rt>や</rt></ruby>です。
+                    <span class="cn">這裡是伴手禮店。</span>
+                </p>
+                <p>
+                    <ruby>大<rt>おお</rt></ruby>きい <ruby>店<rt>みせ</rt></ruby>ですね。
+                    <span class="cn">好大的店喔。</span>
+                </p>
+                <p>
+                    あ！それは <ruby>有名<rt>ゆうめい</rt></ruby>な お<ruby>菓子<rt>かし</rt></ruby>です。
+                    <span class="cn">啊！那是著名的點心。</span>
+                </p>
+                <p>
+                    とても <ruby>美味<rt>おい</rt></ruby>しそうです。
+                    <span class="cn">看起來很好吃。</span>
+                </p>
+            </div>
+        </div>
+        <div class="page-number">10 / 30</div>
+    </div>
+
+    <!-- Slide 11: Story Part 2 Continued -->
+    <div class="slide">
+        <h2>ストーリー 2：<ruby>続<rt>つづ</rt></ruby>き (故事：續)</h2>
+        <div class="content">
+            <div class="story-box">
+                <p>
+                    <span class="role-icon">👧🏻</span>(<ruby>店員<rt>てんいん</rt></ruby>) いらっしゃいませ。
+                    <span class="cn">歡迎光臨。</span>
+                </p>
+                <p>
+                    <span class="role-icon">👦🏻</span>すみません。これは いくらですか。
+                    <span class="cn">不好意思。這個多少錢？</span>
+                </p>
+                <p>
+                    <span class="role-icon">👧🏻</span>それは <ruby>千円<rt>せんえん</rt></ruby>です。
+                    <span class="cn">那個是一千圓。</span>
+                </p>
+                <p>
+                    <span class="role-icon">👦🏻</span>じゃあ、これを ください。
+                    <span class="cn">那請給我這個。</span>
+                </p>
+            </div>
+        </div>
+        <div class="page-number">11 / 30</div>
+    </div>
+
+    <!-- Slide 12: Comprehension Questions -->
+    <div class="slide">
+        <h2><ruby>読解<rt>どっかい</rt></ruby>チェック (閱讀測驗)</h2>
+        <div class="content">
+            <p><ruby>問<rt>とい</rt></ruby>１. <ruby>翔太<rt>しょうた</rt></ruby>さんは どこに いますか。</p>
+            <p class="cn">翔太在哪裡？</p>
+            <ul style="list-style: none; margin-left: 20px;">
+                <li>ア. ホテル</li>
+                <li>イ. お<ruby>土産<rt>みやげ</rt></ruby><ruby>屋<rt>や</rt></ruby></li>
+            </ul>
+            <br>
+            <p><ruby>問<rt>とい</rt></ruby>２. お<ruby>菓子<rt>かし</rt></ruby>は いくらですか。</p>
+            <p class="cn">點心多少錢？</p>
+            <ul style="list-style: none; margin-left: 20px;">
+                <li>ア. <ruby>千円<rt>せんえん</rt></ruby></li>
+                <li>イ. <ruby>二千円<rt>にせんえん</rt></ruby></li>
+            </ul>
+        </div>
+        <div class="page-number">12 / 30</div>
+    </div>
+
+    <!-- Slide 13: Vocabulary List 2 (Adjectives) -->
+    <div class="slide">
+        <h2><ruby>単語<rt>たんご</rt></ruby>リスト (形容詞)</h2>
+        <div class="content">
+            <div class="vocab-grid">
+                <div class="vocab-card">
+                    <div class="vocab-pos">い<ruby>形<rt>けい</rt></ruby></div>
+                    <div class="vocab-word"><ruby>大<rt>おお</rt></ruby>きい</div>
+                    <div class="vocab-cn">大的</div>
+                </div>
+                <div class="vocab-card">
+                    <div class="vocab-pos">い<ruby>形<rt>けい</rt></ruby></div>
+                    <div class="vocab-word"><ruby>小<rt>ちい</rt></ruby>さい</div>
+                    <div class="vocab-cn">小的</div>
+                </div>
+                <div class="vocab-card">
+                    <div class="vocab-pos">い<ruby>形<rt>けい</rt></ruby></div>
+                    <div class="vocab-word"><ruby>高<rt>たか</rt></ruby>い</div>
+                    <div class="vocab-cn">貴/高</div>
+                </div>
+                <div class="vocab-card">
+                    <div class="vocab-pos">い<ruby>形<rt>けい</rt></ruby></div>
+                    <div class="vocab-word"><ruby>安<rt>やす</rt></ruby>い</div>
+                    <div class="vocab-cn">便宜的</div>
+                </div>
+                <div class="vocab-card">
+                    <div class="vocab-pos">い<ruby>形<rt>けい</rt></ruby></div>
+                    <div class="vocab-word"><ruby>近<rt>ちか</rt></ruby>い</div>
+                    <div class="vocab-cn">近的</div>
+                </div>
+                <div class="vocab-card">
+                    <div class="vocab-pos">い<ruby>形<rt>けい</rt></ruby></div>
+                    <div class="vocab-word"><ruby>遠<rt>とお</rt></ruby>い</div>
+                    <div class="vocab-cn">遠的</div>
+                </div>
+                <div class="vocab-card">
+                    <div class="vocab-pos">い<ruby>形<rt>けい</rt></ruby></div>
+                    <div class="vocab-word"><ruby>面白<rt>おもしろ</rt></ruby>い</div>
+                    <div class="vocab-cn">有趣的</div>
+                </div>
+                <div class="vocab-card">
+                    <div class="vocab-pos">い<ruby>形<rt>けい</rt></ruby></div>
+                    <div class="vocab-word"><ruby>美味<rt>おい</rt></ruby>しい</div>
+                    <div class="vocab-cn">好吃的</div>
+                </div>
+                <div class="vocab-card">
+                    <div class="vocab-pos">な<ruby>形<rt>けい</rt></ruby></div>
+                    <div class="vocab-word"><ruby>有名<rt>ゆうめい</rt></ruby></div>
+                    <div class="vocab-cn">有名的</div>
+                </div>
+                <div class="vocab-card">
+                    <div class="vocab-pos">な<ruby>形<rt>けい</rt></ruby></div>
+                    <div class="vocab-word"><ruby>綺麗<rt>きれい</rt></ruby></div>
+                    <div class="vocab-cn">漂亮的</div>
+                </div>
+            </div>
+        </div>
+        <div class="page-number">13 / 30</div>
+    </div>
+
+    <!-- Slide 14: Grammar 2 (Adjectives) -->
+    <div class="slide">
+        <h2><ruby>文法<rt>ぶんぽう</rt></ruby> 2：<ruby>形容詞<rt>けいようし</rt></ruby> (形容詞)</h2>
+        <div class="content">
+            <div style="background: white; padding: 20px; border-radius: 8px; border: 1px solid #ccc;">
+                <p><strong><ruby>肯定<rt>こうてい</rt></ruby>:</strong></p>
+                <p><ruby>名詞<rt>めいし</rt></ruby> は <ruby>形容詞<rt>けいようし</rt></ruby> です。</p>
+            </div>
+            <br>
+            <p>1. <ruby>富士山<rt>ふじさん</rt></ruby>は <ruby>高<rt>たか</rt></ruby>いです。</p>
+            <p class="cn">富士山很高。</p>
+            <br>
+            <p>2. <ruby>京都<rt>きょうと</rt></ruby>は <ruby>有名<rt>ゆうめい</rt></ruby>です。</p>
+            <p class="cn">京都很有名。</p>
+        </div>
+        <div class="page-number">14 / 30</div>
+    </div>
+
+    <!-- Slide 15: Game - Guess Where -->
+    <div class="slide">
+        <h2>ゲーム：ここはどこ？ (猜猜哪裡)</h2>
+        <div class="content">
+            <p>請讀提示，猜猜是日本的哪裡？</p>
+            <div class="story-box" style="margin-top: 20px;">
+                <p>ヒント ①：<ruby>東京<rt>とうきょう</rt></ruby>に あります。</p>
+                <p class="cn">提示1：在東京。</p>
+                
+                <p>ヒント ②：<ruby>赤<rt>あか</rt></ruby>いです。</p>
+                <p class="cn">提示2：紅色的。</p>
+
+                <p>ヒント ③：とても <ruby>高<rt>たか</rt></ruby>い タワー(Tower)です。</p>
+                <p class="cn">提示3：非常高的塔。</p>
+            </div>
+            <p style="margin-top: 20px; text-align: center; color: var(--primary);"><ruby>答<rt>こた</rt></ruby>え: <ruby>東京<rt>とうきょう</rt></ruby>タワー !!</p>
+        </div>
+        <div class="page-number">15 / 30</div>
+    </div>
+
+    <!-- Slide 16: Grammar - Want to -->
+    <div class="slide">
+        <h2><ruby>文法<rt>ぶんぽう</rt></ruby> 3：～たいです (想做...)</h2>
+        <div class="content">
+            <div style="background: white; padding: 20px; border-radius: 8px; border-left: 8px solid var(--accent);">
+                <p><strong><ruby>動詞<rt>どうし</rt></ruby> (ます<ruby>形<rt>けい</rt></ruby>) <i class="fa-solid fa-arrow-right"></i> ～たいです</strong></p>
+            </div>
+            <br>
+            <p><i class="fa-solid fa-caret-right"></i> <ruby>行<rt>い</rt></ruby>きます <i class="fa-solid fa-arrow-right"></i> <ruby>行<rt>い</rt></ruby>き<strong>たいです</strong></p>
+            <p class="cn">想去</p>
+            <br>
+            <p><i class="fa-solid fa-caret-right"></i> <ruby>食<rt>た</rt></ruby>べます <i class="fa-solid fa-arrow-right"></i> <ruby>食<rt>た</rt></ruby>べ<strong>たいです</strong></p>
+            <p class="cn">想吃</p>
+            <br>
+            <p><i class="fa-solid fa-caret-right"></i> <ruby>買<rt>か</rt></ruby>います <i class="fa-solid fa-arrow-right"></i> <ruby>買<rt>か</rt></ruby>い<strong>たいです</strong></p>
+            <p class="cn">想買</p>
+        </div>
+        <div class="page-number">16 / 30</div>
+    </div>
+
+    <!-- Slide 17: LINE Chat Title -->
+    <div class="slide">
+        <div style="flex:1; display:flex; flex-direction:column; justify-content:center; align-items:center; background: #25D366;">
+            <i class="fa-brands fa-line" style="font-size: 150px; color: white;"></i>
+            <h1 style="color: white; margin-top: 20px;">LINE <ruby>会話<rt>かいわ</rt></ruby></h1>
+            <p style="color: white; font-size: 30px;">旅行の計画 (計畫)</p>
+        </div>
+        <div class="page-number">17 / 30</div>
+    </div>
+
+    <!-- Slide 18: LINE Chat Page 1 -->
+    <div class="slide">
+        <h2>ライン：<ruby>約束<rt>やくそく</rt></ruby> (約定) ①</h2>
+        <div class="content chat-container">
+            <div class="message msg-right">
+                あきさん、こんにちは。<br>
+                <ruby>明日<rt>あした</rt></ruby>は <ruby>暇<rt>ひま</rt></ruby>ですか。
+                <span class="cn">Aki，你好。明天有空嗎？</span>
+            </div>
+            <div class="message msg-left">
+                はい、<ruby>暇<rt>ひま</rt></ruby>ですよ。<br>
+                どうしましたか。
+                <span class="cn">有喔，有空。怎麼了嗎？</span>
+            </div>
+            <div class="message msg-right">
+                <ruby>浅草<rt>あさくさ</rt></ruby>へ <ruby>行<rt>い</rt></ruby>きたいです。<br>
+                <ruby>一緒<rt>いっしょ</rt></ruby>に <ruby>行<rt>い</rt></ruby>きませんか。
+                <span class="cn">我想去淺草。要不要一起去？</span>
+            </div>
+            <div class="message msg-left">
+                いいですね！<br>
+                <ruby>行<rt>い</rt></ruby>きましょう。
+                <span class="cn">好耶！走吧。</span>
+            </div>
+        </div>
+        <div class="page-number">18 / 30</div>
+    </div>
+
+    <!-- Slide 19: LINE Chat Page 2 -->
+    <div class="slide">
+        <h2>ライン：<ruby>約束<rt>やくそく</rt></ruby> (約定) ②</h2>
+        <div class="content chat-container">
+            <div class="message msg-right">
+                じゃあ、<ruby>駅<rt>えき</rt></ruby>で <ruby>会<rt>あ</rt></ruby>いましょう。<br>
+                10<ruby>時<rt>じ</rt></ruby>は どうですか。
+                <span class="cn">那在車站見。10點如何？</span>
+            </div>
+            <div class="message msg-left">
+                はい、<ruby>大丈夫<rt>だいじょうぶ</rt></ruby>です。<br>
+                <ruby>楽<rt>たの</rt></ruby>しみです！
+                <span class="cn">好，沒問題。好期待！</span>
+            </div>
+            <div class="message msg-right">
+                (スタンプ: OK!)
+            </div>
+        </div>
+        <div class="page-number">19 / 30</div>
+    </div>
+
+    <!-- Slide 20: LINE Chat Questions -->
+    <div class="slide">
+        <h2>ライン の <ruby>質問<rt>しつもん</rt></ruby> (問答)</h2>
+        <div class="content">
+            <p><ruby>問<rt>とい</rt></ruby>１. <ruby>二人<rt>ふたり</rt></ruby>は どこへ <ruby>行<rt>い</rt></ruby>きたいですか。</p>
+            <p class="cn">兩人想去哪裡？</p>
+            <div class="blank" style="width: 300px;">____________</div>
+            <br><br>
+            <p><ruby>問<rt>とい</rt></ruby>２. <ruby>何時<rt>なんじ</rt></ruby>に <ruby>会<rt>あ</rt></ruby>いますか。</p>
+            <p class="cn">幾點見面？</p>
+            <div class="blank" style="width: 300px;">____________</div>
+        </div>
+        <div class="page-number">20 / 30</div>
+    </div>
+
+    <!-- Slide 21: Story Part 3 (Conclusion) -->
+    <div class="slide">
+        <h2>ストーリー 3：<ruby>観光<rt>かんこう</rt></ruby> (觀光)</h2>
+        <div class="content">
+            <div class="story-box">
+                <p>
+                    <ruby>今日<rt>きょう</rt></ruby>は <ruby>浅草<rt>あさくさ</rt></ruby>へ <ruby>来<rt>き</rt></ruby>ました。<ruby>人<rt>ひと</rt></ruby>が <ruby>多<rt>おお</rt></ruby>いです。
+                    <span class="cn">今天來到了淺草。人很多。</span>
+                </p>
+                <p>
+                    <ruby>雷門<rt>かみなりもん</rt></ruby>は とても <ruby>有名<rt>ゆうめい</rt></ruby>です。
+                    <span class="cn">雷門非常有名。</span>
+                </p>
+                <p>
+                    <span class="role-icon">👧🏻</span><ruby>写真<rt>しゃしん</rt></ruby>を <ruby>撮<rt>と</rt></ruby>りましょう！
+                    <span class="cn">來拍照吧！</span>
+                </p>
+                <p>
+                    <span class="role-icon">👦🏻</span>はい、チーズ！
+                    <span class="cn">好，笑一個！</span>
+                </p>
+            </div>
+        </div>
+        <div class="page-number">21 / 30</div>
+    </div>
+
+    <!-- Slide 22: Reflection Activity -->
+    <div class="slide">
+        <h2><ruby>考<rt>かんが</rt></ruby>えましょう (想一想)</h2>
+        <div class="content">
+            <p style="font-size: 30px;">あなたは どこへ <ruby>行<rt>い</rt></ruby>きたいですか？</p>
+            <p class="cn">你想去哪裡？</p>
+            <hr style="margin: 30px 0; border: 1px dashed #ccc;">
+            <p>1. <ruby>日本<rt>にほん</rt></ruby>へ <ruby>行<rt>い</rt></ruby>きたいですか。</p>
+            <p class="cn">想去日本嗎？</p>
+            <p>2. <ruby>何<rt>なに</rt></ruby>を <ruby>食<rt>た</rt></ruby>べたいですか。</p>
+            <p class="cn">想吃什麼？</p>
+            <p>3. <ruby>何<rt>なに</rt></ruby>を <ruby>買<rt>か</rt></ruby>いたいですか。</p>
+            <p class="cn">想買什麼？</p>
+        </div>
+        <div class="page-number">22 / 30</div>
+    </div>
+
+    <!-- Slide 23: Writing Prompt -->
+    <div class="slide">
+        <h2><ruby>作文<rt>さくぶん</rt></ruby>：<ruby>自己紹介<rt>じこしょうかい</rt></ruby> (短文寫作)</h2>
+        <div class="content">
+            <p>請參考範例，寫一段簡單的自我介紹：</p>
+            <div class="story-box" style="background: white; border-color: var(--secondary);">
+                <p><ruby>私<rt>わたし</rt></ruby>は (名字) です。</p>
+                <p><ruby>趣味<rt>しゅみ</rt></ruby>は <ruby>旅行<rt>りょこう</rt></ruby>です。</p>
+                <p>(地名) が <ruby>好<rt>す</rt></ruby>きです。</p>
+                <p>(地名) へ <ruby>行<rt>い</rt></ruby>きたいです。</p>
+                <p>(形容詞) です。</p>
+            </div>
+        </div>
+        <div class="page-number">23 / 30</div>
+    </div>
+
+    <!-- Slide 24: Writing Example -->
+    <div class="slide">
+        <h2><ruby>例文<rt>れいぶん</rt></ruby> (範例)</h2>
+        <div class="content">
+            <div class="story-box">
+                <p><ruby>私<rt>わたし</rt></ruby>は <strong>ケン</strong> です。</p>
+                <p><ruby>趣味<rt>しゅみ</rt></ruby>は <ruby>旅行<rt>りょこう</rt></ruby>です。</p>
+                <p><strong><ruby>北海道<rt>ほっかいどう</rt></ruby></strong> が <ruby>好<rt>す</rt></ruby>きです。</p>
+                <p><strong><ruby>札幌<rt>さっぽろ</rt></ruby></strong> へ <ruby>行<rt>い</rt></ruby>きたいです。</p>
+                <p>とても <strong><ruby>寒<rt>さむ</rt></ruby>い</strong> です。</p>
+                <span class="cn">(我是肯。興趣是旅遊。喜歡北海道。想去札幌。非常冷。)</span>
+            </div>
+        </div>
+        <div class="page-number">24 / 30</div>
+    </div>
+
+    <!-- Slide 25: Review Game 1 -->
+    <div class="slide">
+        <h2><ruby>復習<rt>ふくしゅう</rt></ruby>ゲーム ① (複習遊戲)</h2>
+        <div class="content">
+            <h3><ruby>反対<rt>はんたい</rt></ruby><ruby>言葉<rt>ことば</rt></ruby> (相反詞)</h3>
+            <p>請說出相反的形容詞：</p>
+            <br>
+            <div class="game-grid">
+                <div class="game-card">
+                    <p><ruby>問<rt>とい</rt></ruby>: <ruby>大<rt>おお</rt></ruby>きい (大)</p>
+                    <p style="color:red; margin-top:20px;"><ruby>答<rt>こたえ</rt></ruby>: _________</p>
+                </div>
+                <div class="game-card">
+                    <p><ruby>問<rt>とい</rt></ruby>: <ruby>高<rt>たか</rt></ruby>い (貴/高)</p>
+                    <p style="color:red; margin-top:20px;"><ruby>答<rt>こたえ</rt></ruby>: _________</p>
+                </div>
+            </div>
+            <p style="margin-top:30px; text-align:center; font-size:18px; color:#aaa;">(<ruby>答<rt>こた</rt></ruby>え: 小さい / 安い)</p>
+        </div>
+        <div class="page-number">25 / 30</div>
+    </div>
+
+    <!-- Slide 26: Review Game 2 -->
+    <div class="slide">
+        <h2><ruby>復習<rt>ふくしゅう</rt></ruby>ゲーム ② (句子重組)</h2>
+        <div class="content">
+            <p>請重組句子：</p>
+            <br>
+            <p>1. [ 好き / が / 温泉 / 私 / は / です ]</p>
+            <p style="border-bottom: 2px solid #ccc; height: 40px; margin-bottom: 30px;"></p>
+            
+            <p>2. [ 行き / です / たい / 日本 / へ ]</p>
+            <p style="border-bottom: 2px solid #ccc; height: 40px; margin-bottom: 30px;"></p>
+
+            <p class="cn">1. 我喜歡溫泉。 2. 想去日本。</p>
+        </div>
+        <div class="page-number">26 / 30</div>
+    </div>
+
+    <!-- Slide 27: Culture Note -->
+    <div class="slide">
+        <h2><ruby>文化<rt>ぶんか</rt></ruby>コラム (文化專欄)</h2>
+        <div class="content">
+            <h3>「お<ruby>参<rt>まい</rt></ruby>り (神社參拜)」</h3>
+            <p>
+                神社的參拜禮儀：
+            </p>
+            <ul style="margin-left: 40px;">
+                <li><strong><ruby>手水<rt>ちょうず</rt></ruby></strong>：<ruby>手<rt>て</rt></ruby>を <ruby>洗<rt>あら</rt></ruby>います。<span class="cn">(洗手)</span></li>
+                <li><strong><ruby>二礼<rt>にれい</rt></ruby></strong>：2<ruby>回<rt>かい</rt></ruby> <ruby>礼<rt>れい</rt></ruby>を します。<span class="cn">(鞠躬兩次)</span></li>
+                <li><strong><ruby>二拍手<rt>にはくしゅ</rt></ruby></strong>：2<ruby>回<rt>かい</rt></ruby> <ruby>手<rt>て</rt></ruby>を たたきます。<span class="cn">(拍手兩次)</span></li>
+                <li><strong><ruby>一礼<rt>いちれい</rt></ruby></strong>：1<ruby>回<rt>かい</rt></ruby> <ruby>礼<rt>れい</rt></ruby>を します。<span class="cn">(鞠躬一次)</span></li>
+            </ul>
+        </div>
+        <div class="page-number">27 / 30</div>
+    </div>
+
+    <!-- Slide 28: Homework -->
+    <div class="slide">
+        <h2><ruby>宿題<rt>しゅくだい</rt></ruby> (回家作業)</h2>
+        <div class="content">
+            <div class="story-box" style="background: white;">
+                <p>1. 寫下你想去的三個日本地點。</p>
+                <p>2. 用形容詞 (大きい、綺麗) 介紹它們。</p>
+                <p>3. 下週上課分享！</p>
+            </div>
+            <br>
+            <div style="text-align: center;">
+                <i class="fa-solid fa-pen-fancy" style="font-size: 50px; color: var(--primary);"></i>
+            </div>
+        </div>
+        <div class="page-number">28 / 30</div>
+    </div>
+
+    <!-- Slide 29: Next Week Preview -->
+    <div class="slide">
+        <h2><ruby>来週<rt>らいしゅう</rt></ruby>の<ruby>予告<rt>よこく</rt></ruby> (下週預告)</h2>
+        <div class="content">
+            <div style="text-align: center;">
+                <i class="fa-solid fa-utensils" style="font-size: 80px; color: var(--accent); margin-bottom: 20px;"></i>
+                <h3 style="color: var(--accent); font-size: 40px;">第二章：レストランで</h3>
+                <p class="cn">Chapter 2: At the Restaurant</p>
+                <br>
+                <p>點餐？付錢？好不好吃？</p>
+                <p>下週見！(また来週！)</p>
+            </div>
+        </div>
+        <div class="page-number">29 / 30</div>
+    </div>
+
+    <!-- Slide 30: End -->
+    <div class="slide">
+        <div style="flex:1; display:flex; flex-direction:column; justify-content:center; align-items:center;">
+            <h1>おしまい</h1>
+            <p style="font-size: 30px; margin-top: 20px;">(結束)</p>
+            <br>
+            <p>お<ruby>疲<rt>つか</rt></ruby>れ<ruby>様<rt>さま</rt></ruby>でした！</p>
+            <p class="cn">大家辛苦了！</p>
+            <i class="fa-regular fa-face-smile-wink" style="font-size: 80px; color: var(--primary); margin-top: 50px;"></i>
+        </div>
+        <div class="page-number">30 / 30</div>
+    </div>
+
+    <script>
+        let isEditMode = false;
+        let isMoveMode = false;
+        let selectedElement = null;
+        let currentSlideIndex = 0;
+        const slides = document.querySelectorAll('.slide');
+        const pageIndicator = document.getElementById('page-indicator');
+        const toolbar = document.getElementById('toolbar');
+
+        // 初始化
+        showSlide(0);
+
+        function showSlide(index) {
+            if (index < 0) index = 0;
+            if (index >= slides.length) index = slides.length - 1;
+            
+            slides.forEach(s => s.classList.remove('active'));
+            slides[index].classList.add('active');
+            
+            currentSlideIndex = index;
+            if(pageIndicator) {
+                pageIndicator.innerText = `${currentSlideIndex + 1} / ${slides.length}`;
+            }
+        }
+
+        function changeSlide(direction) {
+            showSlide(currentSlideIndex + direction);
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if(isEditMode) return;
+            if (e.key === 'ArrowRight') changeSlide(1);
+            else if (e.key === 'ArrowLeft') changeSlide(-1);
+        });
+
+        function toggleEdit() {
+            if (isMoveMode) toggleMove();
+            isEditMode = !isEditMode;
+            const btn = document.getElementById('btn-edit');
+            slides.forEach(slide => slide.setAttribute('contenteditable', isEditMode));
+            if (isEditMode) {
+                btn.innerHTML = "💾 完成編輯";
+                btn.classList.add('active');
+            } else {
+                btn.innerHTML = "✏️ 編輯文字";
+                btn.classList.remove('active');
+            }
+        }
+
+        function toggleMove() {
+            if (isEditMode) toggleEdit();
+            isMoveMode = !isMoveMode;
+            const btn = document.getElementById('btn-move');
+            const body = document.body;
+            const draggables = document.querySelectorAll('p, li, h2, h3, .story-box, .game-card, .blank, img');
+
+            if (isMoveMode) {
+                body.classList.add('move-mode');
+                btn.innerHTML = "💾 鎖定位置";
+                btn.classList.add('active');
+                draggables.forEach(el => {
+                    el.classList.add('draggable');
+                    if(el.tagName === 'IMG') el.setAttribute('draggable', false);
+                    el.onmousedown = dragMouseDown;
+                });
+                alert("✋ 移動模式已開啟！\n您可以拖曳畫面上的文字或圖片。\n如果文字換行了，可以把它拖到正確位置。");
+            } else {
+                body.classList.remove('move-mode');
+                btn.innerHTML = "✋ 移動模式";
+                btn.classList.remove('active');
+                draggables.forEach(el => {
+                    el.classList.remove('draggable');
+                    el.onmousedown = null;
+                });
+            }
+        }
+
+        function triggerImageUpload() { document.getElementById('img-upload').click(); }
+
+        function handleImageUpload(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.style.width = "200px";
+                    img.style.position = "absolute";
+                    img.style.top = "100px";
+                    img.style.left = "100px";
+                    img.style.zIndex = "100";
+                    img.classList.add('draggable');
+                    img.onclick = function() {
+                        selectedElement = img;
+                        document.querySelectorAll('img').forEach(i => i.style.outline = "none");
+                        img.style.outline = "3px solid #c0392b";
+                    };
+                    const activeSlide = document.querySelector('.slide.active');
+                    if (activeSlide) {
+                        activeSlide.appendChild(img);
+                        if(isMoveMode) img.onmousedown = dragMouseDown;
+                    }
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function adjustSize(delta) {
+            if (selectedElement && selectedElement.tagName === 'IMG') {
+                const w = parseFloat(window.getComputedStyle(selectedElement).width);
+                selectedElement.style.width = (w + (delta * 10)) + "px";
+                return;
+            }
+            const selection = window.getSelection();
+            if (selection.rangeCount > 0 && !selection.isCollapsed) {
+                const node = selection.anchorNode.parentElement;
+                if (node) {
+                    const currentSize = parseFloat(window.getComputedStyle(node).fontSize);
+                    node.style.fontSize = (currentSize + delta) + "px";
+                }
+            } else if (isEditMode) {
+                alert("請先選取一段文字，或點擊圖片！");
+            } else {
+                 alert("請先選取圖片，或進入編輯模式選取文字！");
+            }
+        }
+        
+        function dragMouseDown(e) {
+            if (!isMoveMode) return;
+            e.preventDefault();
+            let elmnt = e.target;
+            while (!elmnt.classList.contains('draggable') && elmnt.parentElement) {
+                elmnt = elmnt.parentElement;
+                if(elmnt.tagName === 'BODY') return;
+            }
+            if(elmnt.tagName === 'IMG') {
+                selectedElement = elmnt;
+                document.querySelectorAll('img').forEach(i => i.style.outline = "none");
+                elmnt.style.outline = "3px solid #c0392b";
+            }
+            const style = window.getComputedStyle(elmnt);
+            if (style.position === 'static') {
+                const rect = elmnt.getBoundingClientRect();
+                const slide = elmnt.closest('.slide');
+                if (slide) {
+                    const slideRect = slide.getBoundingClientRect();
+                    elmnt.style.position = 'absolute';
+                    elmnt.style.width = rect.width + 'px';
+                    elmnt.style.left = (rect.left - slideRect.left) + 'px';
+                    elmnt.style.top = (rect.top - slideRect.top) + 'px';
+                    elmnt.style.margin = '0';
+                    elmnt.style.zIndex = '1000';
+                }
+            }
+            let pos3 = e.clientX;
+            let pos4 = e.clientY;
+            document.onmouseup = closeDragElement;
+            document.onmousemove = elementDrag;
+            function elementDrag(e) {
+                e.preventDefault();
+                let pos1 = pos3 - e.clientX;
+                let pos2 = pos4 - e.clientY;
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+                elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+            }
+            function closeDragElement() {
+                document.onmouseup = null;
+                document.onmousemove = null;
+            }
+        }
+
+        function toggleToolbar() {
+            toolbar.classList.toggle('minimized');
+            const btn = document.getElementById('toggle-btn');
+            if (toolbar.classList.contains('minimized')) {
+                btn.innerText = '▲';
+            } else {
+                btn.innerText = '▼';
+            }
+        }
+        
+        document.addEventListener('wheel', function(e) {
+            if (selectedElement && selectedElement.tagName === 'IMG' && isMoveMode) {
+                e.preventDefault();
+                const delta = e.deltaY > 0 ? -10 : 10;
+                const w = parseFloat(window.getComputedStyle(selectedElement).width);
+                selectedElement.style.width = Math.max(50, w + delta) + "px";
+            }
+        }, { passive: false });
+    </script>
+</body>
+</html>
